@@ -2,12 +2,26 @@ import { GraphQLServer } from 'graphql-yoga'
 
 // Scalar types - String, Boolean, Int, Float, ID
 
+// Demo user data
+const users = [{
+  id: '1',
+  name: 'Andrew',
+  email: 'andrew@example.com',
+  age: 26
+}, {
+  id: '2',
+  name: 'sarah',
+  email: 'sarah@example.com'
+}, {
+  id: '3',
+  name: 'Mike',
+  email: 'mike@example.com'
+}]
+
 // Type Definitions (schema)
 const typeDefs = `
   type Query {
-    greeting(name: String, position: String): String!
-    add(numbers: [Float!]!): Float!
-    grades: [Int!]!
+    users(query: String): [User!]!
     me: User!
     post: Post
   }
@@ -30,24 +44,14 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
   Query: {
-    greeting(parent, args, ctx, info) {
-      if(args.name && args.position) {
-        return `Hello, ${args.name}! You are my favorite ${args.position}.`
-      } else {
-        return 'Hello!'
-      }
-    },
-    add(parent, args, ctx, info) {
-      if(args.numbers.length === 0) {
-        return 0
+    users(parent, args, ctx, info) {
+      if (!args.query) {
+        return users
       }
 
-      return args.numbers.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue
+      return users.filter((user) => {
+        return user.name.toLowerCase().includes(args.query.toLowerCase())
       })
-    },
-    grades(parent, args, ctx, info) {
-      return [99, 80, 93]
     },
     me() {
       return {
