@@ -71,7 +71,7 @@ const typeDefs = `
   }
   
   type Mutation {
-    createUser(name: String!, email: String!, age: Int!): User!
+    createUser(name: String!, email: String!, age: Int): User!
   }
   
   type User {
