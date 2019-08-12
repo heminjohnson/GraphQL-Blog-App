@@ -185,7 +185,7 @@ const resolvers = {
     },
     createComment(parent, args, ctx, info) {
       const userExists = users.some((user) => user.id === args.author)
-      const postExists = posts.some((post) => post.id === args.post && args.published)
+      const postExists = posts.some((post) => post.id === args.post && post.published)
 
       if(!userExists || !postExists) {
         throw new Error('Unable to find user and post')
